@@ -1,0 +1,15 @@
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\manifest.json
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\NpcInfoOverlay.deps.json
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\NpcInfoOverlay.dll
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\NpcInfoOverlay.pdb
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.csproj.AssemblyReference.cache
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.GeneratedMSBuildEditorConfig.editorconfig
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.AssemblyInfoInputs.cache
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.AssemblyInfo.cs
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.csproj.CoreCompileInputs.cache
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.dll
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\refint\NpcInfoOverlay.dll
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.pdb
+D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\ref\NpcInfoOverlay.dll
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\i18n\default.json
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\i18n\zh.json
