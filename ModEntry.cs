@@ -11,25 +11,45 @@ internal sealed class ModEntry : Mod
 {
     private ModConfig Config = null!;
     private IGenericModConfigMenuApi? Gmcm;
+    private long LastDebugTick = -1;
+    private string? ConfigLocale;
 
     public override void Entry(IModHelper helper)
     {
         Config = helper.ReadConfig<ModConfig>();
         helper.Events.Display.RenderedWorld += OnRenderedWorld;
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        helper.Events.GameLoop.UpdateTicked += OnUpdateTicked;
     }
 
     private void OnGameLaunched(object? sender, GameLaunchedEventArgs e)
     {
         Gmcm = Helper.ModRegistry.GetApi<IGenericModConfigMenuApi>("spacechase0.GenericModConfigMenu");
+        RegisterConfigMenu();
+        Monitor.Log($"Translation diagnostic: locale='{Helper.Translation.Locale}', display='{T("config.display")}', marriage='{T("config.marriage")}'.", LogLevel.Debug);
+    }
+
+    private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
+    {
+        if (Gmcm is not null && ConfigLocale != Helper.Translation.Locale)
+        {
+            RegisterConfigMenu();
+            Monitor.Log($"GMCM config refreshed for locale '{Helper.Translation.Locale}'.", LogLevel.Trace);
+        }
+    }
+
+    private void RegisterConfigMenu()
+    {
         if (Gmcm is null) return;
+        Gmcm.UnregisterModConfig(ModManifest);
         Gmcm.RegisterModConfig(ModManifest, () => Config = new ModConfig(), () => Helper.WriteConfig(Config));
-        Gmcm.SetDefaultIngameOptinValue(ModManifest, false);
+        Gmcm.SetDefaultIngameOptinValue(ModManifest, true);
         Gmcm.RegisterLabel(ModManifest, T("config.display"), string.Empty);
         AddBool(T("config.marriage"), () => Config.ShowMarriageEligibility, v => Config.ShowMarriageEligibility = v);
         AddBool(T("config.gift"), () => Config.ShowGiftStatus, v => Config.ShowGiftStatus = v);
         AddBool(T("config.talk"), () => Config.ShowTalkStatus, v => Config.ShowTalkStatus = v);
         AddBool(T("config.friendship"), () => Config.ShowFriendship, v => Config.ShowFriendship = v);
+        AddBool(T("config.debug"), () => Config.DebugLogging, v => Config.DebugLogging = v);
         AddBool(T("config.marriageable_only"), () => Config.OnlyShowMarriageable, v => Config.OnlyShowMarriageable = v);
         AddBool(T("config.male_only"), () => Config.OnlyShowMale, v => Config.OnlyShowMale = v);
         AddBool(T("config.female_only"), () => Config.OnlyShowFemale, v => Config.OnlyShowFemale = v);
@@ -43,6 +63,7 @@ internal sealed class ModEntry : Mod
         Gmcm.RegisterClampedOption(ModManifest, T("config.offset_y"), string.Empty, () => Config.OffsetY, v => Config.OffsetY = v, -180, 20, 1);
         Gmcm.RegisterClampedOption(ModManifest, T("config.text_scale"), string.Empty, () => Config.TextScale, v => Config.TextScale = v, 0.5f, 1.2f, 0.05f);
         Gmcm.RegisterClampedOption(ModManifest, T("config.opacity"), string.Empty, () => Config.PanelOpacity, v => Config.PanelOpacity = v, 0.1f, 1f, 0.05f);
+        ConfigLocale = Helper.Translation.Locale;
     }
 
     private void AddBool(string name, Func<bool> get, Action<bool> set) => Gmcm!.RegisterSimpleOption(ModManifest, name, string.Empty, get, set);
@@ -66,8 +87,15 @@ internal sealed class ModEntry : Mod
             }
             float distance = Vector2.Distance(player.Position, npc.Position) / 64f;
             if (Config.OnlyShowNearby && distance > Config.MaxDistanceTiles) continue;
+            if (Config.DebugLogging && Game1.ticks != LastDebugTick && Game1.ticks % 60 == 0)
+            {
+                Friendship? debugFriendship = null;
+                player.friendshipData.TryGetValue(npc.Name, out debugFriendship);
+                Monitor.Log($"NPC={npc.Name}, Gender={GetMember(npc, "Gender")}, Marriageable={CanMarry(npc)}, Points={debugFriendship?.Points.ToString() ?? "none"}, GiftsToday={GetInt(debugFriendship, "GiftsToday")}, GiftsThisWeek={GetInt(debugFriendship, "GiftsThisWeek")}, TalkedToday={GetBool(debugFriendship, "TalkedToToday")}, Locale={Helper.Translation.Locale}", LogLevel.Debug);
+            }
             DrawInfo(e.SpriteBatch, npc, player);
         }
+        if (Config.DebugLogging && Game1.ticks % 60 == 0) LastDebugTick = Game1.ticks;
     }
 
     private void DrawInfo(SpriteBatch batch, NPC npc, Farmer player)
@@ -130,6 +158,6 @@ internal sealed class ModEntry : Mod
         return type.GetProperty(name)?.GetValue(obj) ?? type.GetField(name)?.GetValue(obj);
     }
 
-    private static int GetInt(object obj, string name) => GetMember(obj, name) is int value ? value : 0;
-    private static bool GetBool(object obj, string name) => GetMember(obj, name) is bool value && value;
+    private static int GetInt(object? obj, string name) => obj is not null && GetMember(obj, name) is int value ? value : 0;
+    private static bool GetBool(object? obj, string name) => obj is not null && GetMember(obj, name) is bool value && value;
 }

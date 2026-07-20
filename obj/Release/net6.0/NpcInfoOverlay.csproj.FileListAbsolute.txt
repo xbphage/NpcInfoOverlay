@@ -13,3 +13,5 @@ D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\NpcInfoOverlay.pdb
 D:\src\星露谷mod\NpcInfoOverlay\obj\Release\net6.0\ref\NpcInfoOverlay.dll
 D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\i18n\default.json
 D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\i18n\zh.json
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\i18n\zh-CN.json
+D:\src\星露谷mod\NpcInfoOverlay\bin\Release\net6.0\i18n\zh-Hans.json

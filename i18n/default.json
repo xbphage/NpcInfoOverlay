@@ -4,6 +4,7 @@
   "config.gift": "Gift status",
   "config.talk": "Talk status",
   "config.friendship": "Friendship",
+  "config.debug": "Debug logging",
   "config.marriageable_only": "Only show marriageable NPCs",
   "config.male_only": "Only show male NPCs",
   "config.female_only": "Only show female NPCs",

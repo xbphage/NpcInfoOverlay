@@ -1,7 +1,7 @@
 {
   "Name": "NPC Info Overlay",
   "Author": "Codex",
-  "Version": "1.1.3",
+  "Version": "1.0.14",
   "Description": "Shows marriage, gift, talk, and friendship information above NPCs.",
   "UniqueID": "Codex.NpcInfoOverlay",
   "EntryDll": "NpcInfoOverlay.dll",

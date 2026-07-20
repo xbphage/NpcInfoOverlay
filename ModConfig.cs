@@ -8,6 +8,7 @@ internal sealed class ModConfig
     public bool ShowGiftStatus { get; set; } = true;
     public bool ShowTalkStatus { get; set; } = true;
     public bool ShowFriendship { get; set; } = true;
+    public bool DebugLogging { get; set; } = false;
     public bool OnlyShowMarriageable { get; set; } = false;
     public bool OnlyShowMale { get; set; } = false;
     public bool OnlyShowFemale { get; set; } = false;
